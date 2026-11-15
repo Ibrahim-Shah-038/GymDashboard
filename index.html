@@ -1,0 +1,790 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITZONE | Gym Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --bg: #101210;
+            --card: #191d19;
+            --green: #b7f34b;
+            --text: #f4f5f2;
+            --muted: #92988f;
+            --border: #292e29;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+            width: 245px;
+            background: #151815;
+            padding: 30px 20px;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .menu-title {
+            color: var(--muted);
+            font-size: 11px;
+            margin: 25px 12px 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .menu a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 13px;
+            text-decoration: none;
+            color: var(--muted);
+            border-radius: 10px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            transition: .3s;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: #293321;
+            color: var(--green);
+        }
+
+        .menu i {
+            width: 20px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 30px;
+            width: calc(100% - 40px);
+        }
+
+        /* Main Content */
+
+        .main {
+            margin-left: 245px;
+            padding: 30px 40px;
+            width: calc(100% - 245px);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .welcome h1 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .profile img {
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info h4 {
+            font-size: 13px;
+        }
+
+        .profile-info p {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 5px;
+        }
+
+        /* Hero */
+
+        .hero {
+            background: linear-gradient(100deg, #28351c, #192018);
+            border: 1px solid #3b4b2a;
+            border-radius: 18px;
+            padding: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .hero h2 {
+            font-size: 27px;
+            margin-bottom: 12px;
+        }
+
+        .hero h2 span {
+            color: var(--green);
+        }
+
+        .hero p {
+            color: #b0b9a8;
+            font-size: 13px;
+            line-height: 1.8;
+            max-width: 400px;
+        }
+
+        .hero button {
+            margin-top: 20px;
+            padding: 12px 22px;
+            border: none;
+            background: var(--green);
+            color: #17200d;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .hero-image {
+            font-size: 95px;
+            color: var(--green);
+            opacity: .85;
+            padding: 0 40px;
+        }
+
+        /* Statistics */
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0 18px;
+        }
+
+        .section-heading h2 {
+            font-size: 17px;
+        }
+
+        .section-heading span {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 17px;
+        }
+
+        .stat-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 21px;
+            border-radius: 14px;
+        }
+
+        .stat-top {
+            display: flex;
+            justify-content: space-between;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .stat-icon {
+            width: 35px;
+            height: 35px;
+            background: #293321;
+            color: var(--green);
+            display: grid;
+            place-items: center;
+            border-radius: 9px;
+        }
+
+        .stat-card h2 {
+            font-size: 27px;
+            margin: 18px 0 8px;
+        }
+
+        .stat-card small {
+            color: var(--green);
+            font-size: 11px;
+        }
+
+        /* Dashboard Grid */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 18px;
+            margin-top: 20px;
+        }
+
+        .panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 23px;
+        }
+
+        .panel h3 {
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .panel-subtitle {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* Weekly Chart */
+
+        .chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: end;
+            height: 190px;
+            margin-top: 25px;
+            border-bottom: 1px solid var(--border);
+            gap: 15px;
+        }
+
+        .bar-group {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .bar {
+            width: 100%;
+            max-width: 32px;
+            background: #46543b;
+            border-radius: 6px 6px 0 0;
+            transition: .3s;
+        }
+
+        .bar:hover {
+            background: var(--green);
+        }
+
+        .bar.active {
+            background: var(--green);
+        }
+
+        .bar-group span {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: -20px;
+        }
+
+        /* Workout List */
+
+        .workout-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .workout-icon {
+            background: #293321;
+            color: var(--green);
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+        }
+
+        .workout-info {
+            flex: 1;
+        }
+
+        .workout-info h4 {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .workout-info p {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .workout-time {
+            color: var(--green);
+            font-size: 11px;
+        }
+
+        /* Membership */
+
+        .membership {
+            margin-top: 20px;
+            background: linear-gradient(120deg, #29391e, #1c2418);
+            border: 1px solid #425633;
+            padding: 22px;
+            border-radius: 14px;
+        }
+
+        .membership h3 {
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .membership p {
+            color: #bdc6b5;
+            font-size: 11px;
+            margin-bottom: 16px;
+        }
+
+        .progress {
+            background: #47513e;
+            height: 7px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress div {
+            width: 70%;
+            height: 100%;
+            background: var(--green);
+            border-radius: 10px;
+        }
+
+        .membership-bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 10px;
+            color: #d3ddc9;
+        }
+
+        /* Responsive */
+
+        @media(max-width: 1100px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 800px) {
+            .sidebar {
+                width: 65px;
+                padding: 25px 10px;
+            }
+
+            .logo {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .logo span {
+                font-size: 20px;
+            }
+
+            .menu a {
+                justify-content: center;
+                padding: 14px 5px;
+                font-size: 0;
+            }
+
+            .menu a i {
+                font-size: 16px;
+            }
+
+            .menu-title,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .main {
+                margin-left: 65px;
+                width: calc(100% - 65px);
+                padding: 25px 18px;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media(max-width: 500px) {
+            .hero {
+                padding: 22px;
+            }
+
+            .hero h2 {
+                font-size: 21px;
+            }
+
+            .hero-image {
+                display: none;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-card h2 {
+                font-size: 22px;
+            }
+
+            .profile-info {
+                display: none;
+            }
+
+            .topbar {
+                gap: 10px;
+            }
+
+            .welcome h1 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            FIT<span>ZONE.</span>
+        </div>
+
+        <div class="menu-title">Main Menu</div>
+
+        <nav class="menu">
+            <a href="#" class="active">
+                <i class="fa-solid fa-border-all"></i> Dashboard
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-dumbbell"></i> Workouts
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-calendar-days"></i> Schedule
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-chart-line"></i> Progress
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-utensils"></i> Nutrition
+            </a>
+            <a href="#">
+                <i class="fa-solid fa-utensils"></i> Nutrition
+            </a>
+        </nav>
+
+        <div class="menu-title">Account</div>
+
+        <nav class="menu">
+            <a href="#">
+                <i class="fa-solid fa-user"></i> Profile
+            </a>
+
+            <a href="#">
+                <i class="fa-solid fa-gear"></i> Settings
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom menu">
+            <a href="#">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Dashboard -->
+    <main class="main">
+
+        <!-- Topbar -->
+        <header class="topbar">
+
+            <div class="welcome">
+                <h1>Good Morning, Alex! 👋</h1>
+                <p>Let's make today count. Your fitness journey continues.</p>
+            </div>
+
+            <div class="profile">
+                <img src="https://i.pravatar.cc/100?img=12" alt="Profile">
+
+                <div class="profile-info">
+                    <h4>Alex Morgan</h4>
+                    <p>Premium Member</p>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Hero Section -->
+        <section class="hero">
+
+            <div>
+                <h2>BUILD YOUR <span>BEST SELF.</span></h2>
+
+                <p>
+                    Every rep brings you closer to your goals.
+                    Stay consistent, stay focused, and become
+                    stronger every single day.
+                </p>
+
+                <button onclick="startWorkout()">
+                    Start Workout <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="hero-image">
+                <i class="fa-solid fa-dumbbell"></i>
+            </div>
+
+        </section>
+
+
+        <!-- Statistics -->
+        <div class="section-heading">
+            <h2>Your Activity</h2>
+            <span>This Week</span>
+        </div>
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Calories Burned
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                </div>
+
+                <h2>2,450</h2>
+                <small>↑ 12% this week</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Workouts Done
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+                </div>
+
+                <h2>18</h2>
+                <small>↑ 4 sessions</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Active Hours
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                </div>
+
+                <h2>24.5</h2>
+                <small>↑ 8% this week</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-top">
+                    Weight
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-weight-scale"></i>
+                    </div>
+                </div>
+
+                <h2>72.5 <small>kg</small></h2>
+                <small>↓ 1.5 kg this month</small>
+            </div>
+
+        </section>
+
+
+        <!-- Dashboard Grid -->
+        <section class="dashboard-grid">
+
+            <!-- Activity Chart -->
+            <div class="panel">
+
+                <h3>Weekly Activity</h3>
+                <p class="panel-subtitle">Your workout hours throughout the week</p>
+
+                <div class="chart">
+
+                    <div class="bar-group">
+                        <div class="bar" style="height: 45%"></div>
+                        <span>Mon</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar active" style="height: 80%"></div>
+                        <span>Tue</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar" style="height: 55%"></div>
+                        <span>Wed</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar active" style="height: 90%"></div>
+                        <span>Thu</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar" style="height: 65%"></div>
+                        <span>Fri</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar active" style="height: 75%"></div>
+                        <span>Sat</span>
+                    </div>
+
+                    <div class="bar-group">
+                        <div class="bar" style="height: 30%"></div>
+                        <span>Sun</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Upcoming Workouts -->
+            <div class="panel">
+
+                <h3>Upcoming Workouts</h3>
+                <p class="panel-subtitle">Your training schedule</p>
+
+                <div class="workout-item">
+                    <div class="workout-icon">
+                        <i class="fa-solid fa-dumbbell"></i>
+                    </div>
+
+                    <div class="workout-info">
+                        <h4>Upper Body Training</h4>
+                        <p>Chest, Shoulders & Arms</p>
+                    </div>
+
+                    <div class="workout-time">09:00 AM</div>
+                </div>
+
+                <div class="workout-item">
+                    <div class="workout-icon">
+                        <i class="fa-solid fa-person-running"></i>
+                    </div>
+
+                    <div class="workout-info">
+                        <h4>Cardio Session</h4>
+                        <p>Running & Treadmill</p>
+                    </div>
+
+                    <div class="workout-time">04:00 PM</div>
+                </div>
+
+                <div class="workout-item">
+                    <div class="workout-icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+
+                    <div class="workout-info">
+                        <h4>Core Training</h4>
+                        <p>Abs & Core Strength</p>
+                    </div>
+
+                    <div class="workout-time">06:00 PM</div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Membership -->
+        <section class="membership">
+
+            <h3>
+                <i class="fa-solid fa-crown"></i>
+                Premium Membership
+            </h3>
+
+            <p>Your membership is active. Keep pushing your limits!</p>
+
+            <div class="progress">
+                <div></div>
+            </div>
+
+            <div class="membership-bottom">
+                <span>Membership Progress</span>
+                <span>70% Completed</span>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script>
+        function startWorkout() {
+            alert("Let's get moving! Your workout session is starting.");
+        }
+
+        // Display current date in browser console
+        console.log("FITZONE Dashboard Loaded Successfully!");
+    </script>
+
+</body>
+</html>
